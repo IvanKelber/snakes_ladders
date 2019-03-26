@@ -28,18 +28,17 @@ func TestTileHasPath(t *testing.T) {
 type PlayerMovementTest struct {
 	start int
 	roll int
-	path int  
 	expected int
 }
 
 func TestPlayerMovement(t *testing.T) {
 	board := EmptyBoard(10)
 	cases := []PlayerMovementTest {
-		{0,1,-1,1},
-		{0,2,0,0},
-		{0,3,7,7},
-		{7,6,-1,7},
-		{7,3,-1,10},
+		{0,1,1}, // no path
+		{0,2,0}, // snake back to 0
+		{0,3,7}, // ladder up to 7
+		{7,6,7}, // overshoot
+		{7,3,10}, // win the game
 	}
 	board.customTiles([]int{-1,-1,0,7,-1,-1,-1,-1,-1,-1})
 	for _, c := range cases {
