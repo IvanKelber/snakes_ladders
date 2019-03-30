@@ -23,12 +23,12 @@ func (this Player) rollDie() int {
 }
 
 // Public Method that the user takes
-func (this *Player) TakeTurn() {
-	this.takeTurn(this.rollDie())
+func (this *Player) TakeTurn() int {
+	return this.takeTurn(this.rollDie())
 }
 
 // Private method that can be tested
-func (this *Player) takeTurn(roll int) {
+func (this *Player) takeTurn(roll int) int{
 	stop := this.position + roll;
 	fmt.Printf("%s rolls a %d ", this.name, roll)
 
@@ -49,7 +49,7 @@ func (this *Player) takeTurn(roll int) {
 		fmt.Printf("and lands on %d\n", stop)
 	}
 	this.updatePosition(stop)
-	
+	return stop
 }
 
 func (this *Player) updatePosition(newPosition int) {

@@ -57,3 +57,18 @@ func TestPlayerMovement(t *testing.T) {
 	}
 }
 
+// This function simulates an entire game
+func TestGamePlay(T *testing.T) {
+	game := NewGame(100, 4, .5)
+	curr := 0
+	player := game.players[curr]
+	turns := 0
+	fmt.Printf("Starting Game...\n")
+	for player.TakeTurn() != game.board.capacity {
+		turns++
+		curr = (curr + 1) % game.numPlayers()
+		player = game.players[curr]
+	}
+	fmt.Printf("Game took %d turns to complete!\n", turns)
+}
+
