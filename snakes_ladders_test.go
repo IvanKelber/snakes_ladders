@@ -32,7 +32,11 @@ type PlayerMovementTest struct {
 }
 
 func TestPlayerMovement(t *testing.T) {
-	board := EmptyBoard(10)
+	//Setup
+	game := EmptyGame();
+	game.board = EmptyBoard(10)
+	game.board.customTiles([]int{-1,-1,0,7,-1,-1,-1,-1,-1,-1})
+
 	cases := []PlayerMovementTest {
 		{0,1,1}, // no path
 		{0,2,0}, // snake back to 0
@@ -40,17 +44,12 @@ func TestPlayerMovement(t *testing.T) {
 		{7,6,7}, // overshoot
 		{7,3,10}, // win the game
 	}
-	board.customTiles([]int{-1,-1,0,7,-1,-1,-1,-1,-1,-1})
 	for _, c := range cases {
-		p := newPlayer("test",c.start, nil)
-		board.addPlayer(p)
+		p := game.addPlayer("test", c.start)
 		p.takeTurn(c.roll)
 		fmt.Println(p.position)
 		if p.position != c.expected {
-			path := -1
-			if c.start + c.roll < 10 {
-				path = board.tiles[c.start + c.roll]
-			} 
+			path := game.board.getPath(c.start + c.roll)
 			t.Errorf("Player that started on position %d, rolled a %d, and took path %d, landed on position %d.  Expected position %d", 
 				c.start, c.roll, path, p.position, c.expected)
 		}

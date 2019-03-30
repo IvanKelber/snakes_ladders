@@ -10,7 +10,6 @@ const MAX_PLAYERS = 10
 type Board struct {
 	tiles []int
 	capacity int
-	players []*Player
 }
 
 func EmptyBoard(size int) *Board {
@@ -18,7 +17,7 @@ func EmptyBoard(size int) *Board {
 	for i := range tiles {
 		tiles[i] = -1
 	}
-	return &Board{tiles,size,[]*Player{}}
+	return &Board{tiles,size}
 }
 
 func (this *Board) createPlayers(num int) []*Player {
@@ -29,31 +28,23 @@ func (this *Board) createPlayers(num int) []*Player {
 	return players
 }
 
-func NewBoard(size, players int, percentage float64) *Board {
+func NewBoard(size int, percentage float64) *Board {
 	tiles := make([]int, size)
 	for i := range tiles {
 		tiles[i] = randomPathLength(percentage, i, size/10, size/2, size)
 	}
-	board := &Board{tiles,size,nil}
-	board.createPlayers(players)
-	return board
+	return &Board{tiles,size}
 }
 
 func (this Board) tileHasPath(index int) bool {
 	return this.tiles[index] != -1
 }
 
-func (this *Board) addPlayer(player *Player) {
-	player.board = this
-	this.players = append(this.players, player)
-}
-
-func (this *Board) clearPlayers() {
-	this.players = []*Player{}
-}
-
-func (this Board) numPlayers() int {
-	return len(this.players)
+func (this Board) getPath(index int) int {
+	if index < this.capacity {
+		return this.tiles[index]
+	}
+	return -1
 }
 
 func (this *Board) customTiles(tiles []int) {
